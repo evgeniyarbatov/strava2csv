@@ -1,6 +1,10 @@
 # strava2csv
 
-Convert Strava archive download to CSV file
+Convert Strava archive download to CSV file.
+
+Use [bulk export](https://support.strava.com/hc/en-us/articles/216918437-Exporting-your-Data-and-Bulk-Export#h_01GG58HC4F1BGQ9PQZZVANN6WF) on Strava to download the archive.
+
+Run this on `activities` directory.
 
 ## run
 
