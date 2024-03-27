@@ -2,7 +2,7 @@
 
 Convert Strava archive download to CSV file
 
-## Run
+## run
 
 ```
 go run main.go
