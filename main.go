@@ -21,7 +21,7 @@ func main() {
 	var mu sync.Mutex
 	var wg sync.WaitGroup
 
-	var extractedPoints [][]string
+	var extractedPoints []Point
 
 	files, _ := os.ReadDir(dir)
 	for _, file := range files {
@@ -46,7 +46,7 @@ func main() {
 func ParseFiles(
 	file fs.DirEntry,
 	dir string,
-	extractedPoints *[][]string,
+	extractedPoints *[]Point,
 	mu *sync.Mutex,
 	wg *sync.WaitGroup,
 ) {
@@ -81,16 +81,16 @@ func ParseFiles(
 		for _, point := range gpxData.Trk.Trkseg.Trkpt {
 			*extractedPoints = append(
 				*extractedPoints,
-				[]string{
-					point.Time,
-					gpxData.Trk.Type,
-					fileName,
-					FloatToString(point.Lat),
-					FloatToString(point.Lon),
-					FloatToString(point.Ele),
-					strconv.Itoa(point.Cad),
-					strconv.Itoa(point.Hr),
-					strconv.Itoa(point.Pwr),
+				Point{
+					Time:      point.Time,
+					Sport:     gpxData.Trk.Type,
+					Filename:  fileName,
+					Latitude:  point.Lat,
+					Longitude: point.Lon,
+					Elevation: point.Ele,
+					Cadence:   point.Cad,
+					Heartrate: point.Hr,
+					Power:     point.Pwr,
 				},
 			)
 		}
@@ -105,16 +105,16 @@ func ParseFiles(
 				for _, point := range lap.Track {
 					*extractedPoints = append(
 						*extractedPoints,
-						[]string{
-							point.Time,
-							activity.Sport,
-							fileName,
-							FloatToString(point.Position.Latitude),
-							FloatToString(point.Position.Longitude),
-							FloatToString(point.Ele),
-							strconv.Itoa(point.Cad),
-							strconv.Itoa(point.Hr),
-							strconv.Itoa(point.Pwr),
+						Point{
+							Time:      point.Time,
+							Sport:     activity.Sport,
+							Filename:  fileName,
+							Latitude:  point.Position.Latitude,
+							Longitude: point.Position.Longitude,
+							Elevation: point.Ele,
+							Cadence:   point.Cad,
+							Heartrate: point.Hr,
+							Power:     point.Pwr,
 						},
 					)
 				}
@@ -139,7 +139,7 @@ func FloatToString(value float64) string {
 }
 
 func WriteCSV(
-	data [][]string,
+	points []Point,
 	filePath string,
 ) {
 	outputDir := filepath.Dir(filePath)
@@ -160,7 +160,19 @@ func WriteCSV(
 	writer := csv.NewWriter(outputFile)
 	defer writer.Flush()
 
-	for _, entry := range data {
+	for _, point := range points {
+		entry := []string{
+			point.Time,
+			point.Sport,
+			point.Filename,
+			FloatToString(point.Latitude),
+			FloatToString(point.Longitude),
+			FloatToString(point.Elevation),
+			strconv.Itoa(point.Cadence),
+			strconv.Itoa(point.Heartrate),
+			strconv.Itoa(point.Power),
+		}
+
 		writer.Write(entry)
 	}
 }
@@ -223,4 +235,16 @@ type TrackPt struct {
 type Pos struct {
 	Latitude  float64 `xml:"LatitudeDegrees"`
 	Longitude float64 `xml:"LongitudeDegrees"`
+}
+
+type Point struct {
+	Time      string
+	Sport     string
+	Filename  string
+	Latitude  float64
+	Longitude float64
+	Elevation float64
+	Cadence   int
+	Heartrate int
+	Power     int
 }
