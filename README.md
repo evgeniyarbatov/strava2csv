@@ -15,23 +15,8 @@ go run main.go \
 ```
 ## output
 
-Format:
-
 ```
-Time
-ActivityType
-Filename
-Latitude
-Longitude
-Elevation
-Cadence
-Heartrate
-Power
-```
-
-Example:
-
-```
+Time,ActivityType,Filename,Latitude,Longitude,Elevation,Cadence,Heartrate,Power
 2022-10-01T15:33:08.149Z,Running,8439099964.tcx.gz,1.34324833,103.83843833,6.248,0,104,348
 2022-10-01T15:33:09.149Z,Running,8439099964.tcx.gz,1.343325,103.83849167,6.248,0,103,0
 2022-10-01T15:33:10.149Z,Running,8439099964.tcx.gz,1.34342333,103.83851833,7.315,0,103,192
@@ -43,7 +28,6 @@ Example:
 2022-10-01T15:33:16.149Z,Running,8439099964.tcx.gz,0,0,7.315,0,103,282
 2022-10-01T15:33:17.149Z,Running,8439099964.tcx.gz,0,0,7.315,0,103,142
 ```
-
 
 ## perf
 
